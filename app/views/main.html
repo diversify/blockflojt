@@ -4,7 +4,15 @@
     <button ng-click='getPictures()'>Get!</button>
     <ul>
         <li ng-repeat='picture in pictures' >
-            <img ng-src="{{picture}}" />
+            <img ng-src="{{picture.picURL}}" />
+            <div class="info">
+                <span class="user">User: {{picture.user.username}}</span>
+                <span class="tags">
+                    <span class="tag" ng-repeat="tag in picture.tags">
+                        #{{tag}}
+                    </span>
+                </span>
+            </div>
         </li>
     </ul>
 </div>

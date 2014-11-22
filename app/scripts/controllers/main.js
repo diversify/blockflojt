@@ -24,8 +24,16 @@ angular.module('blockflojtApp')
                 $scope.pictures = [];
 
                 for(var i = 0; i < 20; i++) {
-                    var s = data.data[i].images.standard_resolution.url;
-                    $scope.pictures.push(s);
+                    var pic = data.data[i];
+                    var picURL = pic.images.standard_resolution.url;
+                    var user = pic.user;
+                    var tags = pic.tags;
+
+                    $scope.pictures.push({
+                        picURL: picURL,
+                        user: user,
+                        tags: tags
+                    });
                 }
             }).
             error(function(data, status, headers, config) {
