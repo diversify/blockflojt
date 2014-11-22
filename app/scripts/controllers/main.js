@@ -43,40 +43,37 @@ angular.module('blockflojtApp')
 	$scope.findSong('happy');
 
 
-	$scope.data = 'hej';
+    $scope.data = "";
 
-	$scope.getPictures = function() {
-	    $scope.data += ' waiting...';
-	    $http.jsonp(requestURL)
-		    .success(function(data, status, headers, config) {
-				$scope.pictures = [];
+    $scope.getPictures = function() {
+        $scope.data += " waiting...";
+        $http.jsonp(requestURL).
+            success(function(data, status, headers, config) {
+                $scope.data = "";
+                $scope.pictures = [];
 
-				for(var i = 0; i < 20; i++) {
-					var pic = data.data[i];
-					var picURL = pic.images.standard_resolution.url;
-					var user = pic.user;
-					var tags = pic.tags;
+                for(var i = 0; i < 20; i++) {
+                    var pic = data.data[i];
+                    var picURL = pic.images.standard_resolution.url;
+                    var user = pic.user;
+                    var tags = pic.tags;
 
-					$scope.pictures.push({
-						picURL: picURL,
-						user: user,
-						tags: tags
-					});
-				}
-		    }).
-		    error(function(data, status, headers, config) {
-				$scope.data = 'Error!';
-		    });
-	};
+                    $scope.pictures.push({
+                        picURL: picURL,
+                        user: user,
+                        tags: tags
+                    });
+                }
+            }).
+            error(function(data, status, headers, config) {
+                $scope.data = "Error!";
+            });
+    }
+    var getClientID = function() { return "25e0c0b7ab2d47cbb2aad2589664aa93";}
 
-	var getClientID = function() {
-		return '25e0c0b7ab2d47cbb2aad2589664aa93';
-	};
-
-	var head = 'https://api.instagram.com/v1/tags/';
-	var tag = 'diversify';
-	var tail = '/media/recent?client_id=';
-	var callbackParam = '&callback=JSON_CALLBACK';
-	var requestURL = head + tag + tail + getClientID() + callbackParam;
- 
-});
+    var head = "https://api.instagram.com/v1/tags/"
+    var tag = "diversify";
+    var tail = "/media/recent?client_id="
+    var callbackParam = "&callback=JSON_CALLBACK"
+    var requestURL = head + tag + tail + getClientID() + callbackParam;
+  });
