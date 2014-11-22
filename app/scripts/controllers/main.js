@@ -1,13 +1,43 @@
 'use strict';
 
 angular.module('blockflojtApp')
-    .controller('MainCtrl', function ($scope, $http, $q) {
+    .controller('MainCtrl', function ($scope, $http, $q, $timeout) {
 
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+
+    $scope.currentHashtag = 'happy';
+    $scope.resultSong;
+    $scope.pictures = [];
+    $scope.currentPhoto;
+    $scope.currentPhotoIndex = 0;
+    $scope.hashtagArray;
+
+    var init = function(photoIndex) {
+        $scope.getPictures().then(function() {
+            var searchParameters,
+                hashtagIndex;
+            $scope.hashtagArray = [];
+            $scope.currentPhoto = $scope.pictures[$scope.currentPhotoIndex];
+            console.log('photo:',$scope.currentPhoto);
+            searchParameters;
+            $scope.hashtagArray = angular.copy($scope.currentPhoto.tags);
+            hashtagIndex = $scope.hashtagArray.indexOf($scope.currentHashtag);
+            $scope.hashtagArray.splice(hashtagIndex, 1);
+            if ($scope.hashtagArray.length > 0) {
+                if ($scope.hashtagArray.length > 3) {
+                    searchParameters = $scope.hashtagArray.slice(0, 3);
+                } else {
+                    searchParameters = angular.copy($scope.hashtagArray);
+                }
+                $scope.findSong(searchParameters);
+            }
+        });
+        //$timeout(init, 6000);
+    };
 
     $scope.findSong = function(searchParam) {
         var endPoint = 'http://developer.echonest.com/api/v4/song/search';
@@ -21,36 +51,43 @@ angular.module('blockflojtApp')
         };
         var searchTypes = ['mood', 'artist', 'style'];
         var promiseStuff = [];
-        for (var i in searchTypes) {
-            var paramsObj = angular.copy(paramsPlaceholder);
-            paramsObj[searchTypes[i]] = searchParam;
-            promiseStuff.push($http.jsonp(endPoint, {params: paramsObj}));
+        for (var k in searchParam) {
+            console.log('searchParam: '+searchParam[k]);
+            for (var i in searchTypes) {
+                var paramsObj = angular.copy(paramsPlaceholder);
+                paramsObj[searchTypes[i]] = searchParam[k];
+                promiseStuff.push($http.jsonp(endPoint, {params: paramsObj}));
+            }
         }
         $q.all(promiseStuff).then(function(response) {
-            var resultSong;
             var maxHot = 0;
             for (var j in response) {
                 var song = response[j].data.response.songs[0];
                 console.log('song: ',song);
-                if (song.song_hotttnesss > maxHot) {
+                if (song && song.song_hotttnesss > maxHot) {
                     maxHot = song.song_hotttnesss;
-                    resultSong = song;
+                    $scope.resultSong = song;
                 }
             }
-            console.log('resultSong: ',resultSong);
+            console.log('resultSong: ',$scope.resultSong);
+            if ($scope.resultSong === undefined) {
+                $scope.currentPhotoIndex++;
+                init();
+            }
         });
     };
-    $scope.findSong('happy');
 
-
-    $scope.data = '';
 
     $scope.getPictures = function() {
-        $scope.data += ' waiting...';
-        $http.jsonp(requestURL).
+        var InstagramClientID = '25e0c0b7ab2d47cbb2aad2589664aa93';
+        var head = 'https://api.instagram.com/v1/tags/';
+        var tail = '/media/recent?client_id=';
+        var callbackParam = '&callback=JSON_CALLBACK';
+        var requestURL = head + $scope.currentHashtag + tail + InstagramClientID + callbackParam;
+
+        return $http.jsonp(requestURL).
             success(function(data, status, headers, config) {
-                $scope.data = '';
-                $scope.pictures = [];
+                //$scope.pictures = [];
 
                 for(var i = 0; i < 20; i++) {
                     var pic = data.data[i];
@@ -66,14 +103,11 @@ angular.module('blockflojtApp')
                 }
             }).
             error(function(data, status, headers, config) {
-                $scope.data = 'Error!';
+                console.log('Error when fetching images from Instagram', data);
             });
-    }
-    var getClientID = function() { return '25e0c0b7ab2d47cbb2aad2589664aa93';}
+    };
 
-    var head = 'https://api.instagram.com/v1/tags/'
-    var tag = 'diversify';
-    var tail = '/media/recent?client_id='
-    var callbackParam = '&callback=JSON_CALLBACK'
-    var requestURL = head + tag + tail + getClientID() + callbackParam;
+    init();
+
+        
   });
