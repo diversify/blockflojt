@@ -2,6 +2,11 @@
 
     {{data}}
     <button ng-click='getPictures()'>Get!</button>
+    <ul>
+        <li ng-repeat='picture in pictures' >
+            <img ng-src="{{picture}}" />
+        </li>
+    </ul>
 </div>
 
 <div class="row marketing">

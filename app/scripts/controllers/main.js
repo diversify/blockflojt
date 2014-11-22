@@ -18,19 +18,19 @@ angular.module('blockflojtApp')
     $scope.data = "hej";
 
     $scope.getPictures = function() {
-        $scope.fetchPictures();
-    }
-
-    $scope.fetchPictures = function() {
         $scope.data += " waiting...";
         $http.jsonp(requestURL).
             success(function(data, status, headers, config) {
-                $scope.data = data;
+                $scope.pictures = [];
+
+                for(var i = 0; i < 20; i++) {
+                    var s = data.data[i].images.standard_resolution.url;
+                    $scope.pictures.push(s);
+                }
             }).
             error(function(data, status, headers, config) {
                 $scope.data = "Error!";
             });
-        $scope.data += "should be done now";
     }
     var getClientID = function() { return "25e0c0b7ab2d47cbb2aad2589664aa93";}
 
