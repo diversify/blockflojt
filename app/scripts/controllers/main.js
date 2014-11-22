@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('blockflojtApp')
-    .controller('MainCtrl', function ($scope, $http, $q) {
+    .controller('MainCtrl', function ($scope, $http, $q, $routeParams) {
 
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+
 
     $scope.findSong = function(searchParam) {
         var endPoint = 'http://developer.echonest.com/api/v4/song/search';
