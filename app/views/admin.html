@@ -2,5 +2,6 @@
 
 <a ng-href="{{loginURL}}">Login in with Spotify</a>
 <div>
-    <input name='tag'></input>
+    <input name='tag' ng-model='tag'></input>
+    <button ng-click='createPlaylist()'>Start</button>
 </div>

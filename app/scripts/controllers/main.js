@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('blockflojtApp')
-    .controller('MainCtrl', function ($scope, $http, $q, $routeParams) {
+angular.module('blockflojtApp').config(function($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist(['self','https://embed.spotify.com/**']);
+}).controller('MainCtrl', function ($scope, $http, $q, $routeParams) {
 
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
@@ -69,7 +70,7 @@ angular.module('blockflojtApp')
             error(function(data, status, headers, config) {
                 $scope.data = 'Error!';
             });
-    };
+    }{playlist_id};
     var getClientID = function() { return '25e0c0b7ab2d47cbb2aad2589664aa93';};
 
     var head = 'https://api.instagram.com/v1/tags/';
@@ -77,4 +78,7 @@ angular.module('blockflojtApp')
     var tail = '/media/recent?client_id=';
     var callbackParam = '&callback=JSON_CALLBACK';
     var requestURL = head + tag + tail + getClientID() + callbackParam;
+
+    $scope.playerURL = "https://embed.spotify.com/?uri=" + localStorage.getItem('playlist');
+
   });
