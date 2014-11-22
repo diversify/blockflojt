@@ -68,12 +68,12 @@ angular.module('blockflojtApp')
             error(function(data, status, headers, config) {
                 $scope.data = 'Error!';
             });
-    }
-    var getClientID = function() { return '25e0c0b7ab2d47cbb2aad2589664aa93';}
+    };
+    var getClientID = function() { return '25e0c0b7ab2d47cbb2aad2589664aa93';};
 
-    var head = 'https://api.instagram.com/v1/tags/'
+    var head = 'https://api.instagram.com/v1/tags/';
     var tag = 'diversify';
-    var tail = '/media/recent?client_id='
-    var callbackParam = '&callback=JSON_CALLBACK'
+    var tail = '/media/recent?client_id=';
+    var callbackParam = '&callback=JSON_CALLBACK';
     var requestURL = head + tag + tail + getClientID() + callbackParam;
   });

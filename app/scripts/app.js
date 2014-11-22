@@ -30,6 +30,10 @@ angular
         templateUrl: 'views/admin.html',
         controller: 'AdminCtrl'
       })
+      .when('/spotify-callback', {
+        templateUrl: 'views/spotify-callback.html',
+        controller: 'SpotifyCallback'
+      })
       .otherwise({
         redirectTo: '/'
       });
