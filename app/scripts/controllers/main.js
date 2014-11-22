@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('blockflojtApp')
-    .controller('MainCtrl', function ($scope, $http, $q, $timeout) {
+    .controller('MainCtrl', function ($scope, $rootScope, $http, $q, $timeout) {
 
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
@@ -9,7 +9,6 @@ angular.module('blockflojtApp')
       'Karma'
     ];
 
-    $scope.currentHashtag = 'happy';
     $scope.resultSong;
     $scope.pictures = [];
     $scope.currentPhoto;
@@ -17,6 +16,7 @@ angular.module('blockflojtApp')
     $scope.hashtagArray;
 
     var init = function(photoIndex) {
+        if (!$rootScope.currentHashtag) {$rootScope.currentHashtag = 'happy';}
         $scope.getPictures().then(function() {
             var searchParameters,
                 hashtagIndex;
