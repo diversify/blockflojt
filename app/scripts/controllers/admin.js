@@ -9,6 +9,9 @@ angular.module('blockflojtApp')
       'Karma'
     ];
 
+    angular.element('body').css({'background-color': '#333'});
+    angular.element('.footer').css({'position': 'absolute', 'bottom': '0'});
+
     $scope.startPartyMode = function() {
         $rootScope.currentHashtag = angular.copy($scope.hashtag);
         $scope.createPlaylist($scope.hashtag);
