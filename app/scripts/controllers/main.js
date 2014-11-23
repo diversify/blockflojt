@@ -15,6 +15,9 @@ angular.module('blockflojtApp')
     $scope.currentPhotoIndex = 0;
     $scope.hashtagArray;
 
+    angular.element('body').css({'background-color': 'white'});
+    angular.element('.footer').css({'position': 'relative'});
+
     var getPossibleValues = function(theType) {
         var endPoint = 'http://developer.echonest.com/api/v4/artist/list_terms';
         var paramsObj = {
