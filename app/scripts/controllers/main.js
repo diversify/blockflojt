@@ -70,7 +70,7 @@ angular.module('blockflojtApp').config(function($sceDelegateProvider) {
             error(function(data, status, headers, config) {
                 $scope.data = 'Error!';
             });
-    }{playlist_id};
+    };
     var getClientID = function() { return '25e0c0b7ab2d47cbb2aad2589664aa93';};
 
     var head = 'https://api.instagram.com/v1/tags/';
