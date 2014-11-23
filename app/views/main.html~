@@ -1,4 +1,5 @@
 <div class="data">
+<<<<<<< HEAD
 
     <div id="background" style="background: url({{currentPhoto.picURL}}) no-repeat center center fixed"><div id="overlay"></div></div>
 

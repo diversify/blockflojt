@@ -18,6 +18,7 @@ body {
   width:100%;
   
 }
+<<<<<<< HEAD
 p{
   color:white;
 }
@@ -40,10 +41,11 @@ p{
   width:100%;
   z-index:-1;
   height:100%;
-}
+=======
 
 .instagram-info, .song-info {
   color: white;
+>>>>>>> ed231ccbb9c6560327a33e0ad3c5e4e16cf5aea7
 }
 #overlay{
   background: rgba(46,46,46, 0.8);

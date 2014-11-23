@@ -11,6 +11,7 @@ angular.module('blockflojtApp')
 
     $scope.startPartyMode = function() {
         $rootScope.currentHashtag = angular.copy($scope.hashtag);
+        $scope.createPlaylist($scope.hashtag);
         $location.path('/');
     };
 
@@ -44,44 +45,24 @@ angular.module('blockflojtApp')
   }
   getMe();
 
-  $scope.createPlaylist = function() {
+  $scope.createPlaylist = function(hashtag) {
       console.log;
       var endpoint = "https://api.spotify.com/v1/users/"
       var reqURL = endpoint + localStorage.getItem('me') + "/playlists";
 
       function name() {
           var d = new Date();
-          return "#" + $scope.tag + " " + d.toDateString() + " By Blockflöjt"
+          return "#" + hashtag + " " + d.toDateString() + " By Blockflöjt"
       }
 
       // Create the playlist.
     $http.post(reqURL, {name: name(), public: true}).
       success(function(data, status, headers, config) {
-          localStorage.setItem('playlist', data.uri);
+          $rootScope.playlist = data.uri;
       }).
       error(function(data, status, headers, config) {
         console.log(data);
       });
   }
 
-
-  $scope.addSong = function(uri) {
-      // Add a song
-      console.log("men kooooom igeeeeeeeen.");
-      uri = uri ? uri : "spotify:track:2QhURnm7mQDxBb5jWkbDug";
-
-      var me = localStorage.getItem('me');
-      var playlistURI = localStorage.getItem('playlist');
-      var playlistID = playlistURI.match(/playlist\:(.*)/)[1]
-      var reqURL = "https://api.spotify.com/v1/users/" + me + "/playlists/" + playlistID + "/tracks?uris=" + uri;
-
-    $http.post(reqURL, {}).
-      success(function(data, status, headers, config) {
-          console.log("Success!");
-          console.log(data);
-      }).
-      error(function(data, status, headers, config) {
-        console.log(data);
-      });
-  }
 });
