@@ -88,16 +88,16 @@ angular.module('blockflojtApp')
 
         return $http.jsonp(requestURL).
             success(function(data, status, headers, config) {
-                var pic = data.data[0];
-                var picURL = pic.images.standard_resolution.url;
-                var user = pic.user;
-                var tags = pic.tags;
+                    var pic = data.data[0];
+                    var picURL = pic.images.standard_resolution.url;
+                    var user = pic.user;
+                    var tags = pic.tags;
 
-                $scope.pictures.push({
-                    picURL: picURL,
-                    user: user,
-                    tags: tags
-                });
+                    $scope.pictures.push({
+                        picURL: picURL,
+                        user: user,
+                        tags: tags
+                    });
             }).
             error(function(data, status, headers, config) {
                 console.log('Error when fetching images from Instagram', data);
