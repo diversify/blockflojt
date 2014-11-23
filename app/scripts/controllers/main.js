@@ -46,6 +46,11 @@ angular.module('blockflojtApp')
         });
     };
 
+    var nowPlaying = function() {
+        $scope.artist = decodeURIComponent(localStorage.getItem('artist'));
+        $scope.song = decodeURIComponent(localStorage.getItem('song'));
+    }
+
     var init = function(photoIndex) {
         if (!$rootScope.currentHashtag) {$rootScope.currentHashtag = 'happy';}
         getPictures().then(function() {
@@ -68,7 +73,10 @@ angular.module('blockflojtApp')
                 //findSong($scope.hashtagArray);
             }
         });
-        //$timeout(init, 6000);
+
+        nowPlaying();
+
+        $timeout(init, 6000);
     };
 
     var getPictures = function() {
