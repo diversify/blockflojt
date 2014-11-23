@@ -4,5 +4,3 @@
       $(this).addClass(imgClass);
      });
     });
-
-    $("#background").css("background", "url(images/ex.jpg) no-repeat center center fixed");

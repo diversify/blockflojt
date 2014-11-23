@@ -1,50 +1,140 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name blockflojtApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the blockflojtApp
- */
 angular.module('blockflojtApp')
-  .controller('MainCtrl', function ($scope, $http) {
+    .controller('MainCtrl', function ($scope, $rootScope, $http, $q, $timeout) {
+
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
 
-    $scope.data = "hej";
+    $scope.resultSong;
+    $scope.pictures = [];
+    $scope.currentPhoto;
+    $scope.currentPhotoIndex = 0;
+    $scope.hashtagArray;
 
-    $scope.getPictures = function() {
-        $scope.data += " waiting...";
-        $http.jsonp(requestURL).
-            success(function(data, status, headers, config) {
-                $scope.pictures = [];
+    var getPossibleValues = function(theType) {
+        var endPoint = 'http://developer.echonest.com/api/v4/artist/list_terms';
+        var paramsObj = {
+            api_key: 'CEWROMDFMFUUW1QCN',
+            type: theType,
+            callback: 'JSON_CALLBACK',
+            format: 'jsonp'
+        };
+        return $http.jsonp(endPoint, {params: paramsObj});
+    };
 
-                for(var i = 0; i < 20; i++) {
-                    var pic = data.data[i];
-                    var picURL = pic.images.standard_resolution.url;
-                    var user = pic.user;
-                    var tags = pic.tags;
+    var possibleValues = {
+        mood: [],
+        style: []
+    };
+    var setPossibleValues = function() {
+        getPossibleValues('mood').then(function(response) {
+            var moodObj = response.data.response.terms;
+            for (var i in moodObj) {
+                possibleValues.mood.push(moodObj[i].name);
+            }
+        });
 
-                    $scope.pictures.push({
-                        picURL: picURL,
-                        user: user,
-                        tags: tags
-                    });
+        getPossibleValues('style').then(function(response) {
+            var styleObj = response.data.response.terms;
+            for (var i in styleObj) {
+                possibleValues.style.push(styleObj[i].name);
+            }
+        });
+    };
+
+    var init = function(photoIndex) {
+        if (!$rootScope.currentHashtag) {$rootScope.currentHashtag = 'happy';}
+        getPictures().then(function() {
+            var searchParameters,
+                hashtagIndex;
+            $scope.hashtagArray = [];
+            $scope.currentPhoto = $scope.pictures[$scope.currentPhotoIndex];
+            console.log('photo:',$scope.currentPhoto);
+            searchParameters;
+            $scope.hashtagArray = angular.copy($scope.currentPhoto.tags);
+            hashtagIndex = $scope.hashtagArray.indexOf($scope.currentHashtag);
+            $scope.hashtagArray.splice(hashtagIndex, 1);
+            if ($scope.hashtagArray.length > 0) {
+                if ($scope.hashtagArray.length > 3) {
+                    searchParameters = $scope.hashtagArray.slice(0, 3);
+                } else {
+                    searchParameters = angular.copy($scope.hashtagArray);
                 }
+                findSong(searchParameters);
+                //findSong($scope.hashtagArray);
+            }
+        });
+        //$timeout(init, 6000);
+    };
+
+    var getPictures = function() {
+        var InstagramClientID = '25e0c0b7ab2d47cbb2aad2589664aa93';
+        var head = 'https://api.instagram.com/v1/tags/';
+        var tail = '/media/recent?client_id=';
+        var callbackParam = '&callback=JSON_CALLBACK';
+        var requestURL = head + $scope.currentHashtag + tail + InstagramClientID + callbackParam;
+
+        return $http.jsonp(requestURL).
+            success(function(data, status, headers, config) {
+                var pic = data.data[0];
+                var picURL = pic.images.standard_resolution.url;
+                var user = pic.user;
+                var tags = pic.tags;
+
+                $scope.pictures.push({
+                    picURL: picURL,
+                    user: user,
+                    tags: tags
+                });
             }).
             error(function(data, status, headers, config) {
-                $scope.data = "Error!";
+                console.log('Error when fetching images from Instagram', data);
             });
-    }
-    var getClientID = function() { return "25e0c0b7ab2d47cbb2aad2589664aa93";}
+    };
 
-    var head = "https://api.instagram.com/v1/tags/"
-    var tag = "diversify";
-    var tail = "/media/recent?client_id="
-    var callbackParam = "&callback=JSON_CALLBACK"
-    var requestURL = head + tag + tail + getClientID() + callbackParam;
+    var findSong = function(searchParam) {
+        var endPoint = 'http://developer.echonest.com/api/v4/song/search';
+        var paramsPlaceholder = {
+            api_key: 'CEWROMDFMFUUW1QCN',
+            results: 1,
+            sort: 'song_hotttnesss-desc',
+            bucket: 'song_hotttnesss',
+            callback: 'JSON_CALLBACK',
+            format: 'jsonp'
+        };
+        var searchTypes = ['mood', 'style', 'artist', 'title'];
+        var promiseStuff = [];
+        for (var k in searchParam) {
+            for (var i in searchTypes) {
+                if (!possibleValues[searchTypes[i]] || possibleValues[searchTypes[i]].indexOf(searchParam[k]) > -1) {
+                    var paramsObj = angular.copy(paramsPlaceholder);
+                    paramsObj[searchTypes[i]] = searchParam[k];
+                    promiseStuff.push($http.jsonp(endPoint, {params: paramsObj}));
+                }
+            }
+        }
+        $q.all(promiseStuff).then(function(response) {
+            var maxHot = 0;
+            for (var j in response) {
+                var song = response[j].data.response.songs[0];
+                console.log('song: ',song);
+                if (song && song.song_hotttnesss > maxHot) {
+                    maxHot = song.song_hotttnesss;
+                    $scope.resultSong = song;
+                }
+            }
+            console.log('resultSong: ',$scope.resultSong);
+            if ($scope.resultSong === undefined) {
+                $scope.currentPhotoIndex++;
+                init();
+            }
+        });
+    };
+
+    init();
+
   });

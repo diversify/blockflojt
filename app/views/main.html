@@ -1,10 +1,6 @@
-
-
-
 <div class="data">
-    <button ng-click='getPictures()'>Get!</button>
 
-    <div id="background"><div id="overlay"></div></div>
+    <div id="background" style="background: url({{currentPhoto.picURL}}) no-repeat center center fixed"><div id="overlay"></div></div>
 
     <div id="headline">
         <a href="about.html"><img src="images/Quepic_logo_solid.png"/></a>
@@ -13,37 +9,32 @@
     <div id="images">
     <div class="center">
       <div class="box">
-        <img class="pic" src="images/ex.jpg"/>
+        <img id="insta" ng-src="{{currentPhoto.picURL}}" />
       </div>
       <div class="box">
-        <img class="pic" src="images/moderat.jpg"/>
+        <img src="images/moderat.jpg"/>
 
       </div>
-      <div class="box">
-        <img class="pic" src="images/moderat.jpg"/>
-
+      <div class="info">
+	<img class="profilepic" ng-src="{{currentPhoto.user.profile_picture}}" />
+        <p class="user">User: {{currentPhoto.user.username}}</p>
+        <p class="tags">
+            <span class="tag" ng-repeat="tag in hashtagArray">
+                #{{tag}}
+            </span>
+        </p>
       </div>
+
+
+	
+      <div class="info">
+        <div class="song-info">
+          <p>{{resultSong.artist_name}} - {{resultSong.title}}</p>
+        </div>
+      </div>
+
     </div>
     </div>
 
-
-
-
-    <ul>
-        <li ng-repeat='picture in pictures' >
-            <img ng-src="{{picture.picURL}}" />
-            <div class="info">
-                <span class="user">User: {{picture.user.username}}</span>
-                <span class="tags">
-                    <span class="tag" ng-repeat="tag in picture.tags">
-                        #{{tag}}
-                    </span>
-                </span>
-            </div>
-        </li>
-    </ul>
-</div>
-
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script type="text/javascript" src="scripts/imageScript.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/imageScript.js"></script>

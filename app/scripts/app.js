@@ -16,7 +16,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -30,7 +30,13 @@ angular
         templateUrl: 'views/admin.html',
         controller: 'AdminCtrl'
       })
+      .when('/spotify-callback', {
+        templateUrl: 'views/spotify-callback.html',
+        controller: 'SpotifyCallback'
+      })
       .otherwise({
         redirectTo: '/'
       });
+
+      //$locationProvider.html5Mode(true);
   });
