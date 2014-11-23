@@ -137,5 +137,4 @@ angular.module('blockflojtApp')
 
     init();
 
-        
   });

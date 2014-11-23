@@ -13,6 +13,8 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+    <base href="/">
   </head>
   <body ng-app="blockflojtApp">
     <!--[if lt IE 7]>
@@ -36,9 +38,9 @@
 
                 <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="#">Party mode</a></li>
-                        <li><a href="#/admin">Admin</a></li>
-                        <li><a href="#/about">About</a></li>
+                        <li><a href="/#">Party mode</a></li>
+                        <li><a href="/#/admin">Admin</a></li>
+                        <li><a href="/#/about">About</a></li>
                     </ul>
                 </div>
 
@@ -102,6 +104,7 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/admin.js"></script>
+        <script src="scripts/controllers/spotify-callback.js"></script>
         <!-- endbuild -->
 </body>
 </html>
