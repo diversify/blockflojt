@@ -3,19 +3,14 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 @import 'admin';
+@import 'footer';
 
 body {
-  background-color: #333;
+  /*background-color: #333;*/
 }
 
 #main-container {
   margin-top: 50px;
-}
-
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #444;
 }
 
 .instagram-info, .song-info {
