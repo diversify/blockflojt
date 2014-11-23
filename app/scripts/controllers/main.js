@@ -57,10 +57,11 @@ angular.module('blockflojtApp')
     var init = function(photoIndex) {
         if (!$rootScope.currentHashtag) {$rootScope.currentHashtag = 'happy';}
         getPictures().then(function() {
+            console.log('new photo: ',$scope.pictures[$scope.pictures.length-1]);
             var searchParameters,
                 hashtagIndex;
             $scope.hashtagArray = [];
-            $scope.currentPhoto = $scope.pictures[$scope.currentPhotoIndex];
+            $scope.currentPhoto = $scope.pictures[$scope.pictures.length-1];
             console.log('photo:',$scope.currentPhoto);
             searchParameters;
             $scope.hashtagArray = angular.copy($scope.currentPhoto.tags);
@@ -83,7 +84,7 @@ angular.module('blockflojtApp')
     };
 
     var getPictures = function() {
-        var InstagramClientID = '25e0c0b7ab2d47cbb2aad2589664aa93';
+        var InstagramClientID = 'f12ed20fcae6402d8ccbd89ed033a905';
         var head = 'https://api.instagram.com/v1/tags/';
         var tail = '/media/recent?client_id=';
         var callbackParam = '&callback=JSON_CALLBACK';
