@@ -15,7 +15,7 @@ angular.module('blockflojtApp')
     $scope.currentPhotoIndex = 0;
     $scope.hashtagArray;
 
-    angular.element('body').css({'background-color': 'white'});
+    angular.element('body').css({'background-color': '#333'});
     angular.element('.footer').css({'position': 'relative'});
 
     var getPossibleValues = function(theType) {
@@ -80,7 +80,7 @@ angular.module('blockflojtApp')
 
         nowPlaying();
 
-        $timeout(init, 6000);
+        //$timeout(init, 6000);
     };
 
     var getPictures = function() {
