@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('blockflojtApp')
-    .controller('MainCtrl', function ($scope, $rootScope, $http, $q, $timeout) {
+    .controller('MainCtrl', function ($scope, $rootScope, $http, $q, $timeout, $window) {
 
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
@@ -134,6 +134,25 @@ angular.module('blockflojtApp')
             }
         });
     };
+
+    $scope.addSong = function(uri) {
+      // Add a song
+      uri = uri ? uri : "spotify:track:2QhURnm7mQDxBb5jWkbDug";
+
+      var me = localStorage.getItem('me');
+      var playlistURI = $rootScope.playlist;
+      var playlistID = playlistURI.match(/playlist\:(.*)/)[1]
+      var reqURL = "https://api.spotify.com/v1/users/" + me + "/playlists/" + playlistID + "/tracks?uris=" + uri;
+
+    $http.post(reqURL, {}).
+      success(function(data, status, headers, config) {
+          console.log("Success!");
+          console.log(data);
+      }).
+      error(function(data, status, headers, config) {
+        console.log(data);
+      });
+    }
 
     init();
 
