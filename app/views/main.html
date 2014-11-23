@@ -1,7 +1,34 @@
-<div class="data">
 
-    {{data}}
+
+
+<div class="data">
     <button ng-click='getPictures()'>Get!</button>
+
+    <div id="background"><div id="overlay"></div></div>
+
+    <div id="headline">
+        <a href="about.html"><img src="images/Quepic_logo_solid.png"/></a>
+    </div>
+
+    <div id="images">
+    <div class="center">
+      <div class="box">
+        <img class="pic" src="images/ex.jpg"/>
+      </div>
+      <div class="box">
+        <img class="pic" src="images/moderat.jpg"/>
+
+      </div>
+      <div class="box">
+        <img class="pic" src="images/moderat.jpg"/>
+
+      </div>
+    </div>
+    </div>
+
+
+
+
     <ul>
         <li ng-repeat='picture in pictures' >
             <img ng-src="{{picture.picURL}}" />
@@ -17,17 +44,6 @@
     </ul>
 </div>
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
-</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="scripts/imageScript.js"></script>
