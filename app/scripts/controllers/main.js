@@ -49,6 +49,7 @@ angular.module('blockflojtApp')
         });
     };
 
+    // Part of greacemokey hack to get current playing song from Spotify webp
     var nowPlaying = function() {
         $scope.artist = decodeURIComponent(localStorage.getItem('artist'));
         $scope.song = decodeURIComponent(localStorage.getItem('song'));
@@ -77,10 +78,6 @@ angular.module('blockflojtApp')
                 //findSong($scope.hashtagArray);
             }
         });
-
-        nowPlaying();
-
-        //$timeout(init, 6000);
     };
 
     var getPictures = function() {
@@ -108,13 +105,14 @@ angular.module('blockflojtApp')
             });
     };
 
+    // This function is really a big mess. It needs to be split into smaller parts.
     var findSong = function(searchParam) {
         var endPoint = 'http://developer.echonest.com/api/v4/song/search';
         var paramsPlaceholder = {
             api_key: 'CEWROMDFMFUUW1QCN',
             results: 1,
             sort: 'song_hotttnesss-desc',
-            bucket: 'song_hotttnesss',
+            bucket: ['song_hotttnesss','tracks','id:spotify','audio_summary'],
             callback: 'JSON_CALLBACK',
             format: 'jsonp'
         };
@@ -129,6 +127,8 @@ angular.module('blockflojtApp')
                 }
             }
         }
+        // the choice of song should be better structured so we don't make
+        // a zillion calls to echonest.
         $q.all(promiseStuff).then(function(response) {
             var maxHot = 0;
             for (var j in response) {
@@ -136,17 +136,57 @@ angular.module('blockflojtApp')
                 console.log('song: ',song);
                 if (song && song.song_hotttnesss > maxHot) {
                     maxHot = song.song_hotttnesss;
-                    $scope.resultSong = song;
+
+                    // The song needs to be avalible on spotify.
+                    if (song.tracks.length === 0) {
+                        $scope.resultSong = undefined;
+                    } else {
+                    $scope.resultSong = {
+                        title: song.title,
+                        artist_name: song.artist_name,
+                        duration: song.audio_summary.duration,
+                        // I don't know how the exact version should be picked.
+                        spotifyURI: song.tracks[0].foreign_id,
+                        image: ''
+                    };
+
+                    // get the album image from spotify.
+                    // should be done in a better way. ex. a promise.
+                    var trackID = ($scope.resultSong.spotifyURI).match(/track\:(.*)/)[1];
+                    var reqURL = 'https://api.spotify.com/v1/tracks/' + trackID;
+                    $http.get(reqURL).
+                        success(function(data, status, headers, config) {
+                            $scope.resultSong.image = data.album.images[0].url;
+                            console.log($scope.resultSong);
+                        }).
+                        error(function(data, status, headers, config) {
+                            console.log(data);
+                        });
+                    }
+
                 }
             }
             console.log('resultSong: ',$scope.resultSong);
             if ($scope.resultSong === undefined) {
                 $scope.currentPhotoIndex++;
                 init();
+            } else {
+                // Play the song in spotify.
+                var link = document.createElement('a');
+                link.href = $scope.resultSong.spotifyURI;
+                link.click();
+
+                // Wait for the duration of the song until update.
+                // timeout takes a time in ms while song.duration i seconds
+                //
+                // the timeout needs to be a bit shorter to account for the
+                // time it takes to find a new song. Needs more testing
+                $timeout(init, $scope.resultSong.duration * 1000);
             }
         });
     };
 
+    // adds a song to the spotify playlist.
     $scope.addSong = function(uri) {
       // Add a song
       uri = uri ? uri : "spotify:track:2QhURnm7mQDxBb5jWkbDug";

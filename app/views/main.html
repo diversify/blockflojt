@@ -12,12 +12,12 @@
             <img id="insta" ng-src="{{currentPhoto.picURL}}" />
           </div>
           <div class="box">
-            <img src="images/moderat.jpg"/>
+              <img ng-src="{{resultSong.image}}"/>
 
           </div>
           <div class="info row">
             <div class="profilepic col-xs-4">
-    	       <img ng-src="{{currentPhoto.user.profile_picture}}" />
+            <img ng-src="{{currentPhoto.user.profile_picture}}" />
                <p>{{currentPhoto.user.username}}</p>
             </div>
             <div class="tags col-xs-8">
@@ -30,7 +30,6 @@
           </div>
 
 
-    	
           <div class="info">
             <div class="song-info">
                 <div class="col-xs-1 play"><span class="glyphicon glyphicon-play"></span></div>
