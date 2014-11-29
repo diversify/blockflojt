@@ -52,9 +52,13 @@ p{
 
 }
 #headline{
-	text-align: center;
+  text-align: center;
   color: white;
-  text-shaddow: #444 0px 0px 5px;
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  #hashtag {
+    font-weight: 200;
+    margin-right: 0.15em;
+  }
 }
 
 div.images{
@@ -62,8 +66,8 @@ div.images{
   display:inline-block;
 }
 div.center{
-	position:relative;
-	text-align: center;
+  position:relative;
+  text-align: center;
 
 }
 div.box{
@@ -76,8 +80,12 @@ div.box{
   vertical-align: top;
   display:inline-block;
   overflow:hidden;
+
+  box-shadow: 0px 0px 26px 4px rgba(0,0,0,0.2);
+
   img {
     width: 100%;
+    border-radius: 10px;
   }
 }
 img.pic{
@@ -94,7 +102,7 @@ img.pic{
   padding-bottom: 32%;
   margin: 2% 5%;
   vertical-align: top;
-  text-shaddow: #333 0px 0px 12px;
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
 }
 .info{
   display:inline-block;
@@ -110,6 +118,10 @@ img.pic{
     font-size: 2em;
     margin-left: -5px;
   }
+  .glyphicon {
+      color: #62F431;
+      padding-top: 0.15em;
+  }
 }
 .inline {
   display:inline-block;
@@ -120,6 +132,9 @@ img.pic{
     border-radius:50%;
     border: 3px solid white;
     width: 100px;
+  }
+  p {
+    font-size: 1.3em;
   }
 }
 .profilepic, .tags {

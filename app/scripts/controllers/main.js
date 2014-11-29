@@ -137,7 +137,9 @@ angular.module('blockflojtApp')
                 if (song && song.song_hotttnesss > maxHot) {
                     maxHot = song.song_hotttnesss;
 
-                    // The song needs to be avalible on spotify.
+                    // The song needs to be available on spotify.
+                    // We also needs to check that it's available on Sweden
+                    // or whereever the user are.
                     if (song.tracks.length === 0) {
                         $scope.resultSong = undefined;
                     } else {
